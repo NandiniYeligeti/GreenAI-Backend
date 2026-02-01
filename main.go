@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"backend/config"
 	"backend/db"
@@ -15,6 +16,11 @@ func main() {
 
 	router := routes.RegisterRoutes()
 
-	log.Println("Server running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // local development fallback
+	}
+
+	log.Println("Server running on :" + port)
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
